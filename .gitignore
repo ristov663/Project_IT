@@ -1,0 +1,63 @@
+# Ignore Visual Studio specific files
+.vs/
+*.user
+*.suo
+*.vcxproj.user
+*.filters
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+
+# Ignore build output
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Ignore NuGet packages
+packages/
+!packages/repositories.config
+
+# Ignore Rider specific files
+.idea/
+*.sln.iml
+
+# Ignore user-specific files
+*.rsuser
+
+# Ignore environment and secret configuration files
+.env
+secrets.json
+appsettings.Development.json
+
+# Ignore logs and crash reports
+*.log
+CrashReports/
+
+# Ignore compiled files
+*.exe
+*.dll
+*.pdb
+*.class
+*.jar
+
+# Ignore dependency directories
+node_modules/
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.swp
+*.swn
+*.swo
+
+# Ignore database files
+*.mdf
+*.ldf
+
+# Ignore JetBrains Rider project files
+.idea/
+
+# Ignore ReSharper files
+*.DotSettings.user

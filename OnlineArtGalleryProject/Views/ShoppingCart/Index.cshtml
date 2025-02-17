@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+@model IEnumerable<OnlineArtGalleryProject.Models.Painting>
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<br />
+<br />
+<h2>Shopping Cart</h2>
+<br />
+@if (Model.Any())
+{
+
+    <style>
+
+        /* Дополнителен CSS стил за модерен изглед на кошничката */
+
+        /* Стил за таблицата */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 1px solid #ddd;
+        }
+
+            .table th, .table td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+        /* Позадинска боја на кошничката */
+        .shopping-cart {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Стил за вкупниот износ */
+        .total-amount {
+            font-weight: bold;
+            font-size: 50px;
+            text-decoration: double;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #vkupno {
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: double;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Стил за копчето за плаќање */
+        #btnPay {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            #btnPay:hover {
+                background-color: #0056b3;
+            }
+    </style>
+
+    <div class="shopping-cart">
+        <table id="tableArtGalleries" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var painting in Model)
+                {
+                    <tr>
+                        <td>@painting.Name</td>
+                        <td>@painting.Category</td>
+                        <td><img style="width: 90px;" src="@painting.ImageURL"/></td>
+                        <td>@painting.Price</td>
+                    </tr>
+                }
+
+                <tr id="vkupno">
+                    <td colspan="2" class="text-right font-weight-bold">Total amount:</td>
+                    <td class="font-weight-bold">$@Model.Sum(p => p.Price)</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- Пренасочување на копчето "Плати" кон страницата за внес на податоци за нарачката -->
+        <a id="btnPay" href="@Url.Action("Order", "ShoppingCart")" class="btn btn-primary">Pay</a>
+    </div>
+
+    @section scripts{
+        <script>
+            $("#btnPay").click(function () {
+                $("#tableArtGalleries").empty();
+            });
+            
+        </script>
+    }
+
+
+}

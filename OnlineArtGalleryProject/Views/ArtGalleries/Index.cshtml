@@ -1,0 +1,122 @@
+﻿@model IEnumerable<OnlineArtGalleryProject.Models.ArtGallery>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    /* Стилови за контенерот на сликите */
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    /* Стилови за поединечниот елемент со слика */
+    .image-item {
+        width: calc(33.333% - 20px);
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        /* Стилови за сликата */
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* Стилови за текстот */
+        .image-item .text {
+            padding: 10px;
+        }
+
+    /* Болдирани наслови */
+    .bold {
+        font-weight: bold;
+    }
+
+    /* Стилови за копчињата Edit и Delete */
+    .btnEdit, .btnDelete {
+        background-color: #dc3545; /* Црвена боја */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 5px;
+    }
+
+        .btnEdit:hover, .btnDelete:hover {
+            background-color: #c82333; 
+        }
+
+    /* Стилови за копчето Details */
+    .btnDetails {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 5px;
+    }
+
+        .btnDetails:hover {
+            background-color: #c82333;
+        }
+</style>
+
+<br />
+
+<h2>Art Galleries</h2>
+
+<br />
+<hr />
+<img src="https://www.promenadehotel.lv/uploads/files/foto-laumakalnina-3022-1024-682-3000x900.jpg?token=1a7a69b3c68694d74a4daef3a6bbc7ea" style="max-width: 1300px;" />
+<hr />
+<br />
+<button class="btn btn-info">
+    @Html.ActionLink("Add new Art Gallery", "Create")
+</button>
+<br />
+
+
+<div class="image-container">
+    @foreach (var item in Model)
+    {
+        <div class="image-item">
+            <img src="@item.ImageURL" alt="Art Gallery Image" />
+            <div class="text">
+                <p><span class="bold">Name:</span> @item.Name</p>
+                <p><span class="bold">Address:</span> @item.Address</p>
+                <p><span class="bold">Description:</span> @item.Description</p>
+
+                @if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btnEdit" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btnDelete" })
+                }
+
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btnDetails" })
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tableArtGalleries").DataTable();
+        });
+    </script>
+}

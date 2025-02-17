@@ -1,0 +1,218 @@
+﻿@model OnlineArtGalleryProject.Models.Painting
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    .rating-stars {
+        font-size: 32px;
+        margin-top: 10px;
+    }
+
+    .star {
+        cursor: pointer;
+        color: #ccc;
+        display: inline-block;
+        margin-right: 5px;
+        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Add animation to stars */
+    }
+
+    .star-filled {
+        color: gold;
+        font-size: 32px; /* Match the font size of the unfilled stars */
+        animation: blink 1s infinite; /* Blinking animation */
+    }
+
+    /* Blinking animation */
+    @@keyframes blink {
+        0%, 50%, 100% {
+            opacity: 1;
+        }
+
+        25%, 75% {
+            opacity: 0;
+        }
+    }
+
+    /* Style for comment textarea */
+    #commentTextArea {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    /* Style for submit button */
+    #submitCommentBtn {
+        margin-top: 10px;
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: lightgreen;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    #image {
+        max-width: 500px;
+        margin-left: 600px;
+        margin-top: -50px;
+        width: 50%;
+        position: absolute;
+    }
+
+
+
+    #text {
+        width: 40%
+    }
+</style>
+
+
+<br />
+<br />
+
+<h2>Details for Painting</h2>
+
+
+
+<hr />
+<div style="background-image: url(https://img.freepik.com/free-photo/fresh-green-textured-stucco-wall-background_23-2148320403.jpg?w=2000);">
+
+    <div class="form-horizontal" style="position: relative; margin-left: 100px;">
+
+        <br /><br />
+
+        <h4>@Html.DisplayFor(model => model.Name)</h4>
+        <br />
+        <img id="image" src="@Model.ImageURL" />
+
+        <div id="text2">
+
+            <dl class="dl-horizontal">
+
+
+
+
+                <div id="text">
+                    <dt>
+                        Art galerry
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ArtGallery.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Category)
+                    </dd>
+                </div>
+
+
+            </dl>
+        </div>
+        <br />
+        <h5>Creator</h5>
+
+        @Html.ActionLink("Add Artist", "AddNewArtist", new { id = Model.Id })
+
+        <ul>
+            @foreach (var artist in Model.Artists)
+            {
+                <li>
+                    @artist.Name | @Html.ActionLink("Delete Artist", "DeleteArtist", new { paintingId = Model.Id, artistId = artist.Id })
+                </li>
+            }
+        </ul>
+
+
+        <br /><br />
+
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+        <br />
+
+
+        <hr />
+        <div><h4>Rate this painting</h4></div><br />
+
+        <!-- Star Rating System -->
+        <div class="rating-stars">
+            <span class="star star-above" data-rating="1">&#9733;</span>
+            <span class="star star-above" data-rating="2">&#9733;</span>
+            <span class="star star-above" data-rating="3">&#9733;</span>
+            <span class="star star-above" data-rating="4">&#9733;</span>
+            <span class="star star-above" data-rating="5">&#9733;</span>
+        </div>
+
+        <!-- Comment Textarea -->
+<textarea id="commentTextArea" placeholder="Add your comment here"></textarea>
+
+        <!-- Submit Button -->
+        <button id="submitCommentBtn">Submit Comment</button>
+        <br /><br /><br />
+
+    </div>
+</div>
+
+<div style="background-image: url(https://img.freepik.com/free-photo/fresh-green-textured-stucco-wall-background_23-2148320403.jpg?w=2000);">
+    <div style="position: relative; margin-left: 100px;">
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".star-above").click(function () {
+            var rating = $(this).data("rating");
+
+            // Set the selected rating for stars above
+            $(".star-above").removeClass("star-filled");
+            $(this).addClass("star-filled").prevAll(".star-above").addClass("star-filled");
+
+            alert("Selected Rating: " + rating);
+        });
+
+        $("#submitCommentBtn").click(function () {
+            var comment = $("#commentTextArea").val();
+            alert("Comment submitted: " + comment);
+        });
+    });
+</script>
+
+
+
+

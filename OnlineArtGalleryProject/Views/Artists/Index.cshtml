@@ -1,0 +1,132 @@
+﻿@model IEnumerable<OnlineArtGalleryProject.Models.Artist>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    /* Стилови за контенерот на артистите */
+    .artist-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    /* Стилови за поединечниот артист */
+    .artist-item {
+        width: calc(25% - 20px);
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        /* Стилови за сликата на артистот */
+        .artist-item img.circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .artist-item .img-container {
+            overflow: hidden;
+            width: 70%;
+            height: 350px;
+            position: center;
+            margin-left: 45px;
+            margin-top: 50px;
+        }
+
+        /* Стилови за текстот на артистот */
+        .artist-item .text {
+            padding: 10px;
+            margin-top: -100px;
+        }
+
+    /* Болдирани наслови */
+    .bold {
+        font-weight: bold;
+    }
+
+    /* Стилови за копчињата Edit и Delete */
+    .btnEdit, .btnDelete, .btnDetails {
+        background-color: #007bff; /* Сина боја */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .btnCreate {
+        background-color: #007bff; /* Сина боја */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        .btnEdit:hover, .btnDelete:hover, .btnDetails:hover, .btnCreate:hover {
+            background-color: #0056b3; /* Темна сина боја */
+        }
+</style>
+
+<br />
+<h2>Artists</h2>
+<br />
+<hr />
+<img src="https://sothebys-md.brightspotcdn.com/73/c3/01d5f26141bf8fa395b4a4394137/125n10637-bsxvx-01-a.jpg" style="max-width: 1300px;" />
+<hr />
+<br />
+
+<button class="btn btn-info">
+    @Html.ActionLink("Add new Artist", "Create")
+</button>
+<br />
+
+
+
+<div class="artist-container">
+    @foreach (var artist in Model)
+    {
+        <div class="artist-item">
+            <div class="img-container">
+                <img src="@artist.ImageURL" alt="Artist Image" class="circle" />
+            </div>
+            <div class="text">
+                <p><span class="bold">Name:</span> @artist.Name</p>
+                <p><span class="bold">Biography:</span> @artist.Biography</p>
+
+                @if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = artist.Id }, new { @class = "btnEdit" })
+                    @Html.ActionLink("Delete", "Delete", new { id = artist.Id }, new { @class = "btnDelete" })
+                }
+
+                @Html.ActionLink("Details", "Details", new { id = artist.Id }, new { @class = "btnDetails" })
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            // Додадете JavaScript код тука ако е потребно
+        });
+    </script>
+
+}

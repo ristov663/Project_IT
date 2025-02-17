@@ -1,0 +1,151 @@
+﻿@using OnlineArtGalleryProject.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+
+<style>
+    /* Стилови за формата за најава */
+    #loginForm {
+        background-color: #f8f9fa; /* Боја на позадина */
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Стилови за насловот */
+    #title {
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: #333;
+    }
+
+        /* Стилови за текст на насловот */
+        #title::after {
+            content: ' ';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: deepskyblue;
+            margin-top: 5px;
+        }
+
+    /* Стилови за текстот во формата */
+    .form-control {
+        border: none;
+        border-bottom: 2px solid #ced4da;
+        border-radius: 0;
+        padding: 10px 15px;
+        background-color: aliceblue;
+        box-shadow: none;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+    /* Стилови за копчето за најава */
+    .btn-outline-dark {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-outline-dark:hover {
+            background-color: #0056b3;
+        }
+
+    /* Стилови за линковите за регистрација */
+    #loginForm a {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        #loginForm a:hover {
+            color: #0056b3;
+        }
+
+    /* Стилови за иконите на социјалните мрежи */
+    #socialLoginForm .external-login {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+        #socialLoginForm .external-login img {
+            max-width: 30px;
+            margin-right: 10px;
+            border-radius: 50%;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+</style>
+
+<main aria-labelledby="title">
+    <br /><br />
+    <h2 id="title">@ViewBag.Title Online art gallery</h2><br />
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>Use a local account to log in.</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-2 col-md-10">
+                            <input type="submit" value="Log in" class="btn btn-outline-dark" />
+                        </div>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Register as a new user", "Register")
+                    </p>
+                    @* Enable this once you have account confirmation enabled for password reset functionality
+                        <p>
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        </p>*@
+                }
+            </section>
+        </div>
+        <div class="col-md-4">
+            <section id="socialLoginForm">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

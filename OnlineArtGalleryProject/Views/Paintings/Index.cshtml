@@ -1,0 +1,170 @@
+﻿@model IEnumerable<OnlineArtGalleryProject.Models.Painting>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    /* Стилови за контенерот на сликите */
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    /* Стилови за поединечниот елемент со слика */
+    .image-item {
+        width: calc(33.333% - 20px);
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+        /* Стилови за сликата */
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* Стилови за текстот */
+        .image-item .text {
+            padding: 10px;
+        }
+
+    /* Стилови за копчето Add to Cart */
+    .btnAddToCart {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btnAddToCart:hover {
+            background-color: #0056b3;
+        }
+
+    /* Болдирани наслови */
+    .bold {
+        font-weight: bold;
+    }
+
+    /* Стилови за копчињата Edit, Delete и Details */
+    .btnEdit, .btnDelete, .btnDetails {
+        background-color: #28a745; /* Зелена боја */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 5px;
+    }
+
+        .btnEdit:hover, .btnDelete:hover, .btnDetails:hover {
+            background-color: #218838; /* Тамна зелена боја */
+        }
+</style>
+
+
+<br />
+<h2>Paintings</h2>
+
+<br />
+<hr />
+<img src="https://images.discerningassets.com/image/upload/q_auto:best/v1684082503/5_qcacnp_1_yaka3e.jpg" style="max-width: 1300px;" />
+<hr />
+<br />
+<button class="btn btn-info">
+    @Html.ActionLink("Add new Painting", "Create")
+</button>
+<br />
+
+
+<div class="image-container">
+    @foreach (var item in Model)
+    {
+        <div class="image-item">
+            <img src="@item.ImageURL" alt="Painting Image" />
+            <div class="text">
+                <p><span class="bold">Name:</span> @item.Name</p>
+                <p><span class="bold">Price:</span> $@item.Price</p>
+                <p><span class="bold">Description:</span> @item.Description</p>
+                <p><span class="bold">Category:</span> @item.Category</p>
+
+                @if (User.IsInRole("Administrator") || User.IsInRole("Editor"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btnEdit" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btnDelete" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btnDetails" })
+                }
+
+                @if (User.IsInRole("User"))
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btnDetails" })
+                    <button class="btn btn-primary btnAddToCart" onclick="AddToCart('@item.Id')">Add to Cart</button>
+                }
+
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+@section scripts{
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tablePaintings").DataTable();
+
+
+        });
+
+    </script>
+
+
+
+
+    <script>
+        function AddToCart(itemId) {
+            $.ajax({
+                type: 'POST',
+                url: '/Paintings/AddToCart',
+                data: { id: itemId },
+                success: function (data) {
+                    if (data.Success) {
+                        $("#cartItem").text("Cart(" + data.Counter + ")");
+                        alert("Item added to cart successfully!");
+                    } else {
+                        alert("Item added to cart successfully!");
+                    }
+                },
+                error: function () {
+                    alert("There is some problem.");
+                }
+            });
+        }
+    </script>
+
+
+
+}
+
